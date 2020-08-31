@@ -12,7 +12,8 @@ def ted(url: str) -> str:
     _body = "".join(list(map(lambda x: re_sub(r"\t", " ", re_sub(r"\n|\t{2}", "", x)).strip(),
                              html.fromstring(_req).xpath('//div[contains(@class, "Grid__cell")]/p/text()'))))
     with open(f'articles/{url.split("/")[4]}.json', "w") as _file:
-        _file.write(json.dumps({"author": _author, "body": _body, "title": _title, "type": "video", "url": url}))
+        _file.write(json.dumps({"author": _author, "body": _body, "title": _title, "type": "video", "url": url},
+                               ensure_ascii=False))
     return url.split("/")[4]
 
 
@@ -24,7 +25,7 @@ def olhardigital(url: str) -> str:
             url.split("/")[4] if url.split("/")[3] == "noticia" else url.split("/")[5])
     with open(f'articles/{_url}.json', "w") as _file:
         _file.write(json.dumps({"author": _json['author']['name'], "body": _json['articleBody'],
-                                "title": _json['headline'], "type": _json['@type'], "url": url}))
+                                "title": _json['headline'], "type": _json['@type'], "url": url}, ensure_ascii=False))
     return _url
 
 
@@ -38,7 +39,7 @@ def startse(url: str) -> str:
     with open(f'articles/{url.split("/")[-1]}.json', "w") as _file:
         _file.write(json.dumps({"author": _json['@graph'][5]['name'], "body": _body,
                                 "title": _json['@graph'][4]['headline'], "type": _json['@graph'][4]['@type'],
-                                "url": url}))
+                                "url": url}, ensure_ascii=False))
     return url.split("/")[-1]
 
 
